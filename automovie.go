@@ -21,12 +21,12 @@ func NewMovie() *Movie {
 }
 
 func (m *Movie) AddClip(clip Clip) error {
-	if _, err := os.Stat(clip.path); err != nil {
+	if _, err := os.Stat(clip.getPath()); err != nil {
 		if errors.Is(err, os.ErrNotExist) {
-			return fmt.Errorf("clip '%s' does not exist", clip.path)
+			return fmt.Errorf("clip '%s' does not exist", clip.getPath())
 		}
 
-		return fmt.Errorf("failed to open clip '%s'", clip.path)
+		return fmt.Errorf("failed to open clip '%s'", clip.getPath())
 	}
 
 	m.clips = append(m.clips, clip)
@@ -34,7 +34,7 @@ func (m *Movie) AddClip(clip Clip) error {
 	return nil
 }
 
-func (m *Movie) AddClips(clips ...Clip) error {
+func (m *Movie) AddClips(clips ...VideoClip) error {
 	for _, c := range clips {
 		err := m.AddClip(c)
 		if err != nil {
@@ -46,6 +46,10 @@ func (m *Movie) AddClips(clips ...Clip) error {
 }
 
 func (m *Movie) Generate(fileName string) error {
+	if len(m.clips) < 1 {
+		return fmt.Errorf("no clip found")
+	}
+
 	listPath := "__input.txt"
 	lf, err := os.Create(listPath)
 	if err != nil {

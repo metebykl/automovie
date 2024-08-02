@@ -7,7 +7,7 @@ import (
 	"time"
 )
 
-func ConvertJPGToMP4(inputJPG string, outputMP4 string, duration time.Duration) error {
+func convertJPGToMP4(inputJPG string, outputMP4 string, duration time.Duration) error {
 	err := ffmpeg(
 		"-loop", "1",
 		"-i", inputJPG,

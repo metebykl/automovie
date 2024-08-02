@@ -1,4 +1,6 @@
+.automovie
 assets/
+examples/local
 *.exe
 *.exe~
 *.dll
